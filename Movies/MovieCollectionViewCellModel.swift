@@ -16,7 +16,9 @@ struct MovieCollectionViewCellModel {
 
 extension MovieCollectionViewCellModel {
     func configure(_ cell: MovieCollectionViewCell) {
-//        cell.title = title
-//
+        cell.image.image = image
+        cell.genresLabel.text = genre.joined(separator: ", ")
+        cell.ratingLabel.text = String(rating)
+        cell.title.text = title
     }
 }
