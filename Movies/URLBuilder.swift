@@ -21,7 +21,7 @@ struct URLBuilder: URLBuilderType {
         
         var urlComponents = URLComponents(url: providerRequest.baseURL, resolvingAgainstBaseURL: true)
         //записали парамеьтры
-        urlComponents?.queryItems = components
+        //urlComponents?.queryItems = components
         return urlComponents?.url ?? providerRequest.baseURL
     }
 }

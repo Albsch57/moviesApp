@@ -13,7 +13,7 @@ enum NetworkErrorType: Error {
     case decoding, urlEncoding
 }
 
-struct NetworkParam {
+struct NetworkParam: Encodable {
     let name: String
     let value: String
 }

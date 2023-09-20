@@ -13,7 +13,9 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     var image: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .center
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return imageView
     }()
     
@@ -37,41 +39,64 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        makeLayout()
+        configureSubviews()
+        makeConstraints()
     }
-   
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
+extension MovieCollectionViewCell {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        image.frame = bounds
+    }
+}
+
 
 extension MovieCollectionViewCell {
-    private func makeLayout() {
-        contentView.addSubview(image)
-        contentView.addSubview(title)
-        contentView.addSubview(genresLabel)
-        contentView.addSubview(ratingLabel)
+    
+    private func configureSubviews() {
+        [image, title, genresLabel, ratingLabel].forEach {
+            contentView.addSubview($0)
+            
+            if $0 != image {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+            }
+        }
         
-        image.translatesAutoresizingMaskIntoConstraints = false
-        title.translatesAutoresizingMaskIntoConstraints = false
-        genresLabel.translatesAutoresizingMaskIntoConstraints = false
-        ratingLabel.translatesAutoresizingMaskIntoConstraints = false
+        makeShadow()
+    }
+    
+    private func makeShadow() {
+        layer.cornerRadius = 8
+        layer.shadowOffset = CGSize(width: 0, height: 3)
+        layer.shadowRadius = 3
+        layer.shadowOpacity = 0.3
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowPath = UIBezierPath(
+            roundedRect: bounds,
+            byRoundingCorners: .allCorners,
+            cornerRadii: CGSize(width: 8, height: 8)).cgPath
+        layer.shouldRasterize = true
+    }
+    
+    private func makeConstraints() {
+        contentView.directionalLayoutMargins = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
         
+        let layoutGuide = contentView.layoutMarginsGuide
         NSLayoutConstraint.activate([
-            image.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-//            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//            image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            title.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: 8),
+            title.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            title.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
             
-            title.topAnchor.constraint(equalTo: image.topAnchor, constant: 8),
-            title.leadingAnchor.constraint(equalTo: image.leadingAnchor, constant: 8),
+            genresLabel.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+            genresLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
             
-            genresLabel.bottomAnchor.constraint(equalTo: image.bottomAnchor, constant: -8),
-            genresLabel.leadingAnchor.constraint(equalTo: image.leadingAnchor, constant: 8),
-            
-            ratingLabel.bottomAnchor.constraint(equalTo: image.bottomAnchor, constant: -8),
-      //      ratingLabel.leadingAnchor.constraint(equalTo: genresLabel.trailingAnchor, constant: 8),
-            ratingLabel.trailingAnchor.constraint(equalTo: image.trailingAnchor, constant: -8)
+            ratingLabel.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+            ratingLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor)
         ])
     }
 }

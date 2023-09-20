@@ -7,8 +7,17 @@
 
 import Foundation
 
-struct PopularMoviesResponse: Codable {
+struct PopularMoviesResponse {
     let page: Int
     let results: [PopularMovie]
     let totalPages: Int
+    let totalResults: Int
+}
+
+extension PopularMoviesResponse: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case page, results
+        case totalPages = "total_pages"
+        case totalResults = "total_results"
+    }
 }

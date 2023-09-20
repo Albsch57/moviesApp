@@ -8,16 +8,18 @@
 import Foundation
 
 struct PopularMovie {
+    let id: Int
     let title: String
     let year: String
-    let posterURL: URL
+    let posterURL: String?
     let genre: [Int]
-    let average: Double
+    let average: Float
 }
 
 // MARK: - Decodable
 extension PopularMovie: Codable {
     private enum CodingKeys: String, CodingKey {
+        case id
         case title
         case year = "release_date"
         case posterURL = "poster_path"
