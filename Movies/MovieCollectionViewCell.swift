@@ -21,19 +21,37 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     var title: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.font = UIFont.boldSystemFont(ofSize: 38)
+        label.textColor = UIColor.white
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowRadius = 3.0
+        label.layer.shadowOpacity = 1.0
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.numberOfLines = 1
         return label
     }()
     
     var genresLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 28)
+        label.textColor = UIColor.white
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowRadius = 3.0
+        label.layer.shadowOpacity = 10.0
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.numberOfLines = 1
         return label
     }()
     
     var ratingLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 28)
+        label.textColor = UIColor.white
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowRadius = 3.0
+        label.layer.shadowOpacity = 10.0
         return label
     }()
     
@@ -92,11 +110,24 @@ extension MovieCollectionViewCell {
             title.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
             title.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
             
+
             genresLabel.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
             genresLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-            
+//            genresLabel.widthAnchor.constraint(equalToConstant: 200),
+
+
             ratingLabel.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
-            ratingLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor)
+            ratingLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+            
+            
         ])
+        
+        
+        
+//        genresLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+//        ratingLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
+        genresLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        ratingLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
 }

@@ -36,7 +36,11 @@ private extension MovieSearchPresenter {
             guard let self else { return }
             switch result {
             case .success(let response):
-                movies += response.results
+                if response.page > 1 {
+                    movies += response.results
+                } else {
+                    movies = response.results
+                }
                 
                 currentPage = response.page
                 totalPages = response.totalPages
@@ -65,20 +69,7 @@ private extension MovieSearchPresenter {
     func convertToMovieCollectionModel(from items: [PopularMovie]) -> [MovieCollectionViewCellModel] {
         items.map { movie -> MovieCollectionViewCellModel  in
             let genres = movie.genre.compactMap { Genre(rawValue: $0)?.title }
-            
-            
-            let posterURL = {
-                if let posterURL = movie.posterURL {
-                    var cdnURL = MoviesDBProvider.movies(page: 0).cdnURL
-                    cdnURL = cdnURL.appendingPathComponent(posterURL)
-                    return cdnURL
-                } else {
-                    return URL(string: "https://img.freepik.com/free-photo/isolated-happy-smiling-dog-white-background-portrait-4_1562-693.jpg?w=2000")!
-                }
-            }()
-            
-            
-            return MovieCollectionViewCellModel(title: movie.title, imageUrl: posterURL, genre: genres, rating: movie.average)
+            return MovieCollectionViewCellModel(title: movie.title, imageUrl: movie.posterURL, genre: genres, rating: movie.average)
         }
     }
     
@@ -132,7 +123,7 @@ extension MovieSearchPresenter: MovieSearchViewOutput {
     }
     
     func didTap(index: Int) {
-        //
+        router.show(movie: movies[index])
     }
     
     func prefetchMovies() {

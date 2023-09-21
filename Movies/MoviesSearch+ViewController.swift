@@ -94,6 +94,7 @@ extension MoviesSearchViewController: MoviesSearchViewInput {
         case .error(let massage):
             print(massage)
             break
+        default: break
         }
     }
 }
@@ -125,7 +126,9 @@ extension MoviesSearchViewController: UICollectionViewDataSource {
 }
 
 extension MoviesSearchViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter.didTap(index: indexPath.row)
+    }
 }
 
 extension MoviesSearchViewController {

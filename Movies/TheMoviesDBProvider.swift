@@ -12,6 +12,11 @@ enum MoviesDBProvider: Provider {
     
     case searchMovies(query: String, page: Int)
     case movies(page: Int, sorted: SortState = .descending)
+    case detailMovie(id: Int)
+    
+    fileprivate var apiKey: String {
+        "74ca7ce767bbbeb93cb3f061c50efe78"
+    }
     
     var baseURL: URL {
         switch self {
@@ -19,6 +24,8 @@ enum MoviesDBProvider: Provider {
           return URL(string: "https://api.themoviedb.org/3/discover/movie")!
         case .searchMovies(query: _):
            return URL(string: "https://api.themoviedb.org/3/search/movie")!
+        case .detailMovie(id: let id):
+            return URL(string: "https://api.themoviedb.org/3/movie/\(id)")!
         }
     }
     
@@ -45,6 +52,11 @@ enum MoviesDBProvider: Provider {
                 NetworkParam(name: "page", value: "\(page)"),
                 NetworkParam(name: "region", value: ""),
                 NetworkParam(name: "year", value: "")
+            ]
+        case .detailMovie(id: _):
+            return [
+                NetworkParam(name: "api_key", value: apiKey),
+                NetworkParam(name: "append_to_response", value: "videos")
             ]
         }
     }

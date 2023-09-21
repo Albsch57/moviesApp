@@ -9,19 +9,18 @@ import UIKit
 
 class FullPosterViewController: UIViewController {
     
-    private var cardView: FullView {
-        view as! FullView
-    }
-    
-    override func loadView() {
-        view = FullView()
-    }
-    
+    let imageFont: UIImageView = {
+        var image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        image.clipsToBounds = true
+        return image
+    }()
     
     var posterImage: UIImage? {
         didSet {
             if let image = posterImage {
-                cardView.imageFont.image = image
+                imageFont.image = image
             }  else {
                 print("posterImage is nil")
             }
@@ -30,7 +29,7 @@ class FullPosterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        view.backgroundColor = .cyan
+        imageFont.frame = view.bounds
     }
     
 }

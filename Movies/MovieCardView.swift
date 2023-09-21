@@ -7,19 +7,18 @@
 
 import UIKit
 
-class DescriptionView: UIView {
+class MovieCardView: UIView {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = .init(named: "Food")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
     
-    private var nameLabel: UILabel! = nil
-    private var countryLabel: UILabel! = nil
-    private var genreLabel: UILabel! = nil
+    var nameLabel: UILabel! = nil
+    var countryLabel: UILabel! = nil
+    var genreLabel: UILabel! = nil
     
     let trailerButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
@@ -30,7 +29,7 @@ class DescriptionView: UIView {
     
     lazy var ratingLabel: UILabel = makeLabel(title: "10/0", size: 20)
     
-    private var descriptionLabel: UILabel! = nil
+    var descriptionLabel: UILabel! = nil
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -63,7 +62,7 @@ class DescriptionView: UIView {
 }
 
 // MARK: Private Methods
-private extension DescriptionView {
+private extension MovieCardView {
     func makeLabel(title: String, size: CGFloat) -> UILabel {
         let label = UILabel()
         label.text = title
@@ -72,19 +71,17 @@ private extension DescriptionView {
     }
     
     func setupUI() {
-        //
         nameLabel = makeLabel(title: "Name", size: 20)
         countryLabel = makeLabel(title: "Country", size: 20)
         genreLabel = makeLabel(title: "Genre Name", size: 20)
         
-        descriptionLabel = makeLabel(title: "Description long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long textDescription long text", size: 20)
+        descriptionLabel = makeLabel(title: "", size: 20)
         descriptionLabel.numberOfLines = 0
         
         addSubview(scrollView)
        
         scrollView.addSubview(imageView)
         scrollView.addSubview(stackView)
-        
         
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(countryLabel)
@@ -102,8 +99,6 @@ private extension DescriptionView {
             imageView.heightAnchor.constraint(equalToConstant: 300),
             stackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16)
         ])
-        
-        //
 
         stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
@@ -113,7 +108,7 @@ private extension DescriptionView {
     }
 }
 
-extension DescriptionView {
+extension MovieCardView {
     override func layoutSubviews() {
         super.layoutSubviews()
         scrollView.frame = bounds
