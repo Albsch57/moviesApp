@@ -62,7 +62,10 @@ extension FullPosterViewController: FullPosterViewInput {
             imageView.sd_imageIndicator?.indicatorView.tintColor = .red
             imageView.sd_setImage(with: url)
         case .error(let message):
-            break
+            alert(title: "Error", message: message) { alert in
+                let ok = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(ok)
+            }
         }
     }
     

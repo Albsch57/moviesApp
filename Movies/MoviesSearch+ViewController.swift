@@ -48,6 +48,7 @@ private extension MoviesSearchViewController {
         collectionView.frame = view.bounds
         collectionView.alwaysBounceVertical = true
         collectionView.refreshControl = refreshControl
+        collectionView.backgroundView = emptyResultView
         
         // Refrech Control
         refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
@@ -116,7 +117,7 @@ extension MoviesSearchViewController: MoviesSearchViewInput {
     func update(viewState: ViewState<Movie>) {
         switch viewState {
         case .loading:
-            break
+            collectionView.backgroundView = emptyResultView
         case .content(_):
             collectionView.reloadData()
             collectionView.backgroundView = collectionView.numberOfItems(inSection: 0) == 0 ? emptyResultView : nil
@@ -125,9 +126,11 @@ extension MoviesSearchViewController: MoviesSearchViewInput {
                 refreshControl.endRefreshing()
             }
             
-        case .error(let massage):
-            print(massage)
-            break
+        case .error(let message):
+            alert(title: "Error", message: message) { alert in
+                let ok = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(ok)
+            }
         }
     }
 }

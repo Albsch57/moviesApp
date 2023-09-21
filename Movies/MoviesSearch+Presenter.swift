@@ -39,7 +39,6 @@ private extension MovieSearchPresenter {
             case .success(let response):
                 didReceive(response: response)
             case .failure(let error):
-                print(error)
                 input?.update(viewState: .error(massage: error.localizedDescription))
             }
         }
@@ -117,8 +116,10 @@ extension MovieSearchPresenter: MovieSearchViewOutput {
             return
         }
         
+        
         movies = moviesFromCache()
         input?.update(viewState: .content())
+        
     }
     
     func didTapSearch(with query: String) {

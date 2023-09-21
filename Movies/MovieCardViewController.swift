@@ -69,8 +69,11 @@ extension MovieCardViewController: MovieCardViewInput {
             break
         case .content(let movie):
             movieCardViewModel = movie
-        case .error(let massage):
-            break
+        case .error(let message):
+            alert(title: "Error", message: message) { alert in
+                let ok = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(ok)
+            }
         }
     }
 }
