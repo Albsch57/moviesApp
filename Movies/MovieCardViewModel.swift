@@ -8,11 +8,16 @@
 import Foundation
 
 struct MovieCardViewModel {
+    let id: Int
     let title: String
-    let imageUrl: String?
+    let posterPath: String?
     let genre: [String]
     let countries: [String]
     var trailer: VideoPlatform?
     let rating: Float
     let description: String
+}
+
+extension MovieCardViewModel: Movie {
+    
 }

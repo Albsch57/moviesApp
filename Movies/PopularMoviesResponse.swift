@@ -21,3 +21,25 @@ extension PopularMoviesResponse: Codable {
         case totalResults = "total_results"
     }
 }
+
+extension PopularMoviesResponse {
+    struct PopularMovie: Codable {
+        let id: Int
+        let title: String
+        let year: String
+        let posterURL: String?
+        let genre: [Int]
+        let average: Float
+        
+        // MARK: - Decodable
+        private enum CodingKeys: String, CodingKey {
+            case id
+            case title
+            case year = "release_date"
+            case posterURL = "poster_path"
+            case genre = "genre_ids"
+            case average = "vote_average"
+        }
+    }
+    
+}

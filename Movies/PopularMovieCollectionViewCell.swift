@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MovieCollectionViewCell: UICollectionViewCell {
+class PopularMovieCollectionViewCell: UICollectionViewCell {
     
     static let reuseId = "collectionCell"
     
@@ -66,7 +66,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension MovieCollectionViewCell {
+extension PopularMovieCollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         image.frame = bounds
@@ -74,7 +74,7 @@ extension MovieCollectionViewCell {
 }
 
 
-extension MovieCollectionViewCell {
+extension PopularMovieCollectionViewCell {
     
     private func configureSubviews() {
         [image, title, genresLabel, ratingLabel].forEach {

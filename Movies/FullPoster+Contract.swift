@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - View
 protocol FullPosterViewInput: AnyObject {
-    func update(poster: URL)
+    func update(viewState: ViewState<URL>)
 }
 
 // MARK: - Presenter

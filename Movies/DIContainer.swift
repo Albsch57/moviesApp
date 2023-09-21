@@ -5,7 +5,6 @@
 //  Created by Влад Третьяк on 21.09.2023.
 //
 
-import UIKit
 import Swinject
 
 final class DIContainer {

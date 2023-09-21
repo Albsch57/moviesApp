@@ -48,7 +48,7 @@ final class MovieSearchAssembly: Assembly {
 
 final class MovieCardAssembly: Assembly {
     func assemble(container: Container) {
-        container.register(MovieCardViewInput.self) { (r, movie: PopularMovie) in
+        container.register(MovieCardViewInput.self) { (r, movie: Movie) in
             let vc = MovieCardViewController()
             
             let network = r.resolve(NetworkClientType.self)!
@@ -65,12 +65,11 @@ final class MovieCardAssembly: Assembly {
 
 final class PoterPreviewAssembly: Assembly {
     func assemble(container: Container) {
-        container.register(FullPosterViewInput.self) { (r, poster: String ) in
+        container.register(FullPosterViewInput.self) { (r, movie: Movie ) in
             let vc = FullPosterViewController()
             
-            let network = r.resolve(NetworkClient.self)!
             let router = FullPosterRouter(viewController: vc)
-            let presenter = FullPosterPresenter(router: router, poster: poster)
+            let presenter = FullPosterPresenter(router: router, movie: movie)
             
             vc.presenter = presenter
             presenter.input = vc

@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SDWebImage
 
-class FullPosterViewController: UIViewController {
+final class FullPosterViewController: UIViewController {
     
     var presenter: FullPosterViewOutput! = nil
     
@@ -24,7 +25,7 @@ class FullPosterViewController: UIViewController {
         return scrollView
     }()
     
-    let imageFont: UIImageView = {
+    private let imageView: UIImageView = {
         var image = UIImageView()
         image.contentMode = .scaleAspectFit
         image.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -35,9 +36,9 @@ class FullPosterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        scrollView.addSubview(imageFont)
+        scrollView.addSubview(imageView)
         scrollView.frame = view.bounds
-        imageFont.frame = view.bounds
+        imageView.frame = view.bounds
         view.addSubview(scrollView)
         scrollView.delegate = self
         navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .close, target: self, action: #selector(closeButtonTapped))
@@ -52,13 +53,23 @@ class FullPosterViewController: UIViewController {
 }
 
 extension FullPosterViewController: FullPosterViewInput {
-    func update(poster: URL) {
-        imageFont.sd_setImage(with: poster)
+    func update(viewState: ViewState<URL>) {
+        switch viewState {
+        case .loading:
+            break
+        case .content(let url):
+            imageView.sd_imageIndicator = SDWebImageActivityIndicator.large
+            imageView.sd_imageIndicator?.indicatorView.tintColor = .red
+            imageView.sd_setImage(with: url)
+        case .error(let message):
+            break
+        }
     }
+    
 }
 
 extension FullPosterViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageFont
+        imageView
     }
 }

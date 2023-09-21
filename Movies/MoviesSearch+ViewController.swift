@@ -7,54 +7,61 @@
 
 import UIKit
 
-class MoviesSearchViewController: UIViewController {
-    
-    private var movieData: [MovieCollectionViewCellModel] = []
-    
-    var presenter: MovieSearchViewOutput! = nil
+final class MoviesSearchViewController: UIViewController {
+
+    var presenter: MovieSearchViewOutput?
     private let searchBar = UISearchBar()
+    private let emptyResultView = EmptyResultsView()
     
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.reuseId)
+        collectionView.register(PopularMovieCollectionViewCell.self, forCellWithReuseIdentifier: PopularMovieCollectionViewCell.reuseId)
         return collectionView
     }()
+    
+    private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.title = "Popular Movies"
+        
+        setupUI()
+        configureSearchBar()
+        configureSortingButton()
+        presenter?.viewDidLoad()
+    }
+}
+
+// MARK: - Private methods
+private extension MoviesSearchViewController {
+    func setupUI() {
+        // Set system background
         view.backgroundColor = .systemGroupedBackground
         
+        // Configure collection view
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
         collectionView.delegate = self
+        collectionView.setCollectionViewLayout(collectionViewLayout, animated: false)
+        collectionView.frame = view.bounds
+        collectionView.alwaysBounceVertical = true
+        collectionView.refreshControl = refreshControl
         
-        collectionView.setCollectionViewLayout(makeCompositionalLayout(), animated: false)
-        makeLayout()
-        configureSearchBar()
-        sortingMovies()
-        presenter.viewDidLoad()
-    }
-}
-
-extension MoviesSearchViewController {
-    private func configureSearchBar() {
-        let searchController = UISearchController(searchResultsController: nil)
-      
-        searchController.searchBar.placeholder = "Search"
-        searchController.definesPresentationContext = true
-        searchController.extendedLayoutIncludesOpaqueBars = true
-        searchController.searchBar.delegate = self
+        // Refrech Control
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
         
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true
+        // Add subviews
+        view.addSubview(collectionView)
     }
-}
-
-extension MoviesSearchViewController {
-    private func sortingMovies() {
+    
+    @objc
+    private func didPullToRefresh(_ sender: UIRefreshControl) {
+        presenter?.refreshData()
+    }
+    
+    func configureSortingButton() {
 
         let sortedPopular = UIAction(title: "Popular", state: .on) { [weak presenter] _ in
             presenter?.changeSortState(state: .descending)
@@ -69,68 +76,23 @@ extension MoviesSearchViewController {
         sortedUnpopular.image = .init(systemName: "arrow.up")
         
         let menu = UIMenu(options: .singleSelection, children: [sortedPopular, sortedUnpopular])
-        
         let filterButton = UIBarButtonItem(image: .init(systemName: "line.3.horizontal.decrease"), menu: menu)
         
         navigationItem.rightBarButtonItem = filterButton
     }
-}
-
-extension MoviesSearchViewController: MoviesSearchViewInput {
-    func update(viewState: ViewState<MovieCollectionViewCellModel>) {
-        switch viewState {
-        case .loading:
-            break
-        case .data(let rows, let page):
-            if page == 1 {
-                movieData = rows
-            } else {
-                movieData += rows
-            }
-            
-            collectionView.reloadData()
-        case .error(let massage):
-            print(massage)
-            break
-        default: break
-        }
-    }
-}
-
-extension MoviesSearchViewController {
-    private func makeLayout() {
-        view.addSubview(collectionView)
-        collectionView.frame = view.bounds
-    }
-}
-
-extension MoviesSearchViewController: UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        movieData.count
+    func configureSearchBar() {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search"
+        searchController.definesPresentationContext = true
+        searchController.extendedLayoutIncludesOpaqueBars = true
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.reuseId, for: indexPath) as! MovieCollectionViewCell
-        
-        let movie = movieData[indexPath.row]
-        movie.configure(cell)
-       
-        
-        return cell
-    }
-    
-    
-}
-
-extension MoviesSearchViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter.didTap(index: indexPath.row)
-    }
-}
-
-extension MoviesSearchViewController {
-    private func makeCompositionalLayout() -> UICollectionViewCompositionalLayout {
+    // MARK: CollectionViewLayout
+    var collectionViewLayout: UICollectionViewCompositionalLayout {
         let item = NSCollectionLayoutItem(
             layoutSize: .init(
                 widthDimension: .fractionalWidth(1),
@@ -149,22 +111,65 @@ extension MoviesSearchViewController {
     }
 }
 
-extension MoviesSearchViewController: UICollectionViewDataSourcePrefetching {
-    // для тех элементов который вот-вот должны будут показаны
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains(where: { $0.row == movieData.count - 2 }) {
-            // Проверка условия для подгрузки новых моделей
-            presenter.prefetchMovies()
+// MARK: - MoviesSearchViewInput
+extension MoviesSearchViewController: MoviesSearchViewInput {
+    func update(viewState: ViewState<Movie>) {
+        switch viewState {
+        case .loading:
+            break
+        case .content(_):
+            collectionView.reloadData()
+            collectionView.backgroundView = collectionView.numberOfItems(inSection: 0) == 0 ? emptyResultView : nil
+            
+            if refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
+            
+        case .error(let massage):
+            print(massage)
+            break
         }
     }
 }
 
+
+// MARK: - UICollectionViewDataSource
+extension MoviesSearchViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        presenter?.numberOfItems ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularMovieCollectionViewCell.reuseId, for: indexPath) as! PopularMovieCollectionViewCell
+        let movie = presenter?.item(for: indexPath.row)
+        movie?.configure(cell)
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+extension MoviesSearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.didTap(index: indexPath.row)
+    }
+}
+
+// MARK: - Prefetching items for collection view
+extension MoviesSearchViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        if indexPaths.contains(where: { $0.row == (presenter?.numberOfItems ?? 0) - 2 }) {
+            presenter?.prefetchMovies()
+        }
+    }
+}
+
+// MARK: - SearchBarDelegate
 extension MoviesSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        presenter.didTapSearch(with: searchText)
+        presenter?.didTapSearch(with: searchText)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        presenter.didTapSearch(with: "")
+        presenter?.didTapSearch(with: "")
     }
 }

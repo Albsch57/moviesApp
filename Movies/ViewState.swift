@@ -9,7 +9,6 @@ import Foundation
 
 enum ViewState<T> {
     case loading
-    case data(rows: [T], page: Int)
-    case movie(T)
+    case content(T? = nil)
     case error(massage: String)
 }

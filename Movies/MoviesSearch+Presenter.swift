@@ -11,7 +11,7 @@ import EasyStash
 final class MovieSearchPresenter {
     
     private let networkClient: NetworkClientType
-    private var movies = [PopularMovie]()
+    private var movies = [PopularMovieViewModel]()
     
     private var currentPage = 1
     private var totalPages = 0
@@ -37,43 +37,46 @@ private extension MovieSearchPresenter {
             guard let self else { return }
             switch result {
             case .success(let response):
-                if response.page > 1 {
-                    movies += response.results
-                } else {
-                    movies = response.results
-                }
-                
-                currentPage = response.page
-                totalPages = response.totalPages
-                totalResults = response.totalResults
-                
-                let movies = convertToMovieCollectionModel(from: response.results)
-                didReceive(state: .data(rows: movies, page: currentPage))
-                
+                didReceive(response: response)
             case .failure(let error):
                 print(error)
                 input?.update(viewState: .error(massage: error.localizedDescription))
             }
-            
         }
     }
 
     
-    func didReceive(state: ViewState<MovieCollectionViewCellModel>) {
-        input?.update(viewState: state)
+    func didReceive(response: PopularMoviesResponse) {
         
+        // Convert to domain model
+        let movies = response.results.map({
+            let genres = $0.genre.compactMap({ Genre(rawValue: $0)?.title })
+            return PopularMovieViewModel(id: $0.id, title: $0.title, posterPath: $0.posterURL, genre: genres, rating: $0.average)
+        })
+        
+        
+        // Stategy for pagination
+        if response.page > 1 {
+            self.movies += movies
+        } else {
+            self.movies = movies
+        }
+        
+        // Save current state of the pagination
+        currentPage = response.page
+        totalPages = response.totalPages
+        totalResults = response.totalResults
+        
+        // Update view state
+        input?.update(viewState: .content())
+        
+        // Cache movies on background
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self else { return }
             cache(movies: self.movies)
         }
     }
     
-    func convertToMovieCollectionModel(from items: [PopularMovie]) -> [MovieCollectionViewCellModel] {
-        items.map { movie -> MovieCollectionViewCellModel  in
-            let genres = movie.genre.compactMap { Genre(rawValue: $0)?.title }
-            return MovieCollectionViewCellModel(title: movie.title, imageUrl: movie.posterURL, genre: genres, rating: movie.average)
-        }
-    }
     
     func makeStorage() {
         var options: Options = Options()
@@ -86,17 +89,27 @@ private extension MovieSearchPresenter {
         }
     }
     
-    func cache(movies: [PopularMovie]) {
+    func cache(movies: [PopularMovieViewModel]) {
         try? storage?.save(object: movies, forKey: "movies")
     }
     
-    func moviesFromCache() -> [PopularMovie] {
-        (try? storage?.load(forKey: "movies", as: [PopularMovie].self)) ?? []
+    func moviesFromCache() -> [PopularMovieViewModel] {
+        (try? storage?.load(forKey: "movies", as: [PopularMovieViewModel].self)) ?? []
     }
 }
 
 // MARK: - MovieSearchViewOutput
 extension MovieSearchPresenter: MovieSearchViewOutput {
+    
+    
+    var numberOfItems: Int {
+        movies.count
+    }
+    
+    func item(for index: Int) -> PopularMovieViewModel {
+        movies[index]
+    }
+    
     
     func viewDidLoad() {
         if Reachability.isConnectedToNetwork() {
@@ -105,7 +118,7 @@ extension MovieSearchPresenter: MovieSearchViewOutput {
         }
         
         movies = moviesFromCache()
-        input?.update(viewState: .data(rows: convertToMovieCollectionModel(from: movies), page: currentPage))
+        input?.update(viewState: .content())
     }
     
     func didTapSearch(with query: String) {
@@ -119,12 +132,16 @@ extension MovieSearchPresenter: MovieSearchViewOutput {
             loadMovies(request: MoviesDBProvider.searchMovies(query: query, page: currentPage))
         } else {
             let filteredMovies = self.movies.filter({ $0.title.localizedCaseInsensitiveContains(query) })
-            let convertedMovies = convertToMovieCollectionModel(from: filteredMovies)
-            input?.update(viewState: .data(rows: convertedMovies, page: currentPage))
+            input?.update(viewState: .content())
         }
     }
     
     func didTap(index: Int) {
+        guard movies.indices.contains(index) else {
+            input?.update(viewState: .error(massage: "Oops! Something Wrong..."))
+            return
+        }
+        
         router.show(movie: movies[index])
     }
     
@@ -147,6 +164,10 @@ extension MovieSearchPresenter: MovieSearchViewOutput {
         sorted = state
         currentPage = 1
         loadMovies(request: MoviesDBProvider.movies(page: currentPage, sorted: sorted))
+    }
+    
+    func refreshData() {
+        loadMovies(request: MoviesDBProvider.movies(page: 1, sorted: sorted))
     }
 }
 

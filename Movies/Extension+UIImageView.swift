@@ -15,12 +15,13 @@ extension UIImageView {
     }
     
     // MARK: - TheMovieDB Poster Path
-    func setThumbnailPosterFromMovieDB(of name: String?, size: MoviesDBProvider.Poster) {
+    func setThumbnailPosterFromMovieDB(of movie: Movie, size: MoviesDBProvider.Poster) {
         
-        let transformer = SDImageResizingTransformer(size: bounds.size, scaleMode:.aspectFill)
+        let transformer = SDImageResizingTransformer(size: bounds.size.retinaSize, scaleMode:.aspectFill)
         sd_imageIndicator = SDWebImageActivityIndicator.large
+        sd_imageIndicator?.indicatorView.tintColor = .red
         
-        if let name {
+        if let name = movie.posterPath {
             let url = size.url(for: name)
             sd_setImage(with: url, placeholderImage: nil, context: [.imageTransformer: transformer])
             return

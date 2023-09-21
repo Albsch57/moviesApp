@@ -11,19 +11,24 @@ final class FullPosterPresenter {
     
     weak var input: FullPosterViewInput?
     let router: FullPosterViewRouting
-    let poster: String
+    let movie: Movie
     
-    init(input: FullPosterViewInput? = nil, router: FullPosterViewRouting, poster: String) {
+    init(input: FullPosterViewInput? = nil, router: FullPosterViewRouting, movie: Movie) {
         self.input = input
         self.router = router
-        self.poster = poster
+        self.movie = movie
     }
 }
 
 extension FullPosterPresenter: FullPosterViewOutput {
     func viewDidLoad() {
-        let originalURL = MoviesDBProvider.Poster.original.url(for: poster)
-        input?.update(poster: originalURL)
+        guard let posterPath = movie.posterPath else {
+            input?.update(viewState: .error(massage: "Oops. Something wrong..."))
+            return
+        }
+        
+        let originalURL = MoviesDBProvider.Poster.original.url(for: posterPath)
+        input?.update(viewState: .content(originalURL))
     }
     
     func didClose() {

@@ -8,6 +8,7 @@
 import Foundation
 
 struct MovieDetailResponse {
+    let id: Int
     let title: String
     let imageUrl: String?
     let year: String
@@ -38,6 +39,7 @@ struct MovieDetailResponse {
 
 extension MovieDetailResponse: Codable {
     private enum CodingKeys: String, CodingKey {
+        case id
         case title = "original_title"
         case imageUrl = "poster_path"
         case year = "release_date"

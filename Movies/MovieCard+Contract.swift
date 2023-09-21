@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum VideoPlatform {
+enum VideoPlatform: Codable {
     case youtube(key: String)
     
     init?(site: String, keyVideo: String) {
@@ -28,14 +28,12 @@ protocol MovieCardViewInput: AnyObject {
 // MARK: - Presenter
 protocol MovieCardViewOutput: AnyObject {
     func viewDidLoad()
-    func didClose()
-    func showFullPoster(from poster: String)
+    func showFullPoster(from movie: Movie)
     func showTrailer(from platform: VideoPlatform)
 }
 
 // MARK: - Router
 protocol MovieCardViewRouting: AnyObject {
-    func dismiss()
-    func presentPosterPreview(of poster: String)
+    func presentPosterPreview(of movie: Movie)
     func presentTrailer(from platform: VideoPlatform)
 }

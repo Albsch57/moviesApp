@@ -7,25 +7,23 @@
 
 import Foundation
 
-struct MovieCollectionViewCellModel {
+struct PopularMovieViewModel {
+    let id: Int
     let title: String
-    let imageUrl: String?
+    let posterPath: String?
     let genre: [String]
     let rating: Float
 }
 
-extension MovieCollectionViewCellModel {
-    
-    enum ViewState {
-        case loading
-        case `default`
-    }
-    
-    func configure(_ cell: MovieCollectionViewCell) {
-        //cell.image.image = imageUrl
-        cell.image.setThumbnailPosterFromMovieDB(of: imageUrl, size: .w500)
+extension PopularMovieViewModel {
+    func configure(_ cell: PopularMovieCollectionViewCell) {
+        cell.image.setThumbnailPosterFromMovieDB(of: self, size: .w500)
         cell.genresLabel.text = genre.joined(separator: ", ")
         cell.ratingLabel.text = String(rating)
         cell.title.text = title
     }
+}
+
+extension PopularMovieViewModel: Movie {
+    
 }

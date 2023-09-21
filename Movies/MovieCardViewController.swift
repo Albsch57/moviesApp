@@ -7,12 +7,16 @@
 
 import UIKit
 
-class MovieCardViewController: UIViewController {
+final class MovieCardViewController: UIViewController {
     
-    private let movieCardView = MovieCardView()
+    private var movieCardView: MovieCardView {
+        view as! MovieCardView
+    }
+    
     var movieCardViewModel: MovieCardViewModel! = nil {
         didSet {
-            movieCardView.imageView.setThumbnailPosterFromMovieDB(of: movieCardViewModel.imageUrl, size: .w500)
+            navigationItem.title = movieCardViewModel.title
+            movieCardView.imageView.setThumbnailPosterFromMovieDB(of: movieCardViewModel, size: .w500)
             movieCardView.descriptionLabel.text = movieCardViewModel.description
             movieCardView.nameLabel.text = movieCardViewModel.title
             movieCardView.countryLabel.text = movieCardViewModel.countries.joined(separator: ", ")
@@ -25,18 +29,18 @@ class MovieCardViewController: UIViewController {
     var presenter: MovieCardViewOutput?
     
     override func loadView() {
-        view = movieCardView
+        view = MovieCardView()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .cyan
-        navigationItem.title = "Title"
         
         setupTapGestureRecognizer()
         configureTapActionForTrailierButton()
         presenter?.viewDidLoad()
+        
     }
     
     private func configureTapActionForTrailierButton() {
@@ -54,8 +58,7 @@ class MovieCardViewController: UIViewController {
     
     @objc
     private func imageViewTapped() {
-        guard let imageURL = movieCardViewModel.imageUrl else { return }
-        presenter?.showFullPoster(from: imageURL)
+        presenter?.showFullPoster(from: movieCardViewModel)
     }
 }
 
@@ -64,11 +67,10 @@ extension MovieCardViewController: MovieCardViewInput {
         switch viewState {
         case .loading:
             break
-        case .movie(let movie):
+        case .content(let movie):
             movieCardViewModel = movie
         case .error(let massage):
             break
-        default: break
         }
     }
 }

@@ -9,14 +9,13 @@ import Foundation
 
 final class MovieCardPresenter {
     
-    #warning("Надо унифицировать")
-    private let movie: PopularMovie
+    private let movie: Movie
     private let router: MovieCardViewRouting
     private let networkClient: NetworkClientType
    
     weak var input: MovieCardViewInput?
     
-    init(movie: PopularMovie, router: MovieCardViewRouting, networkClient: NetworkClientType, input: MovieCardViewInput? = nil) {
+    init(movie: Movie, router: MovieCardViewRouting, networkClient: NetworkClientType, input: MovieCardViewInput? = nil) {
         self.movie = movie
         self.router = router
         self.networkClient = networkClient
@@ -40,9 +39,10 @@ private extension MovieCardPresenter {
     
     func didReceive(response: MovieDetailResponse) {
         
-        var moviewCardViewModel = MovieCardViewModel(
+        var movieCardViewModel = MovieCardViewModel(
+            id: response.id,
             title: response.title,
-            imageUrl: response.imageUrl,
+            posterPath: response.imageUrl,
             genre: response.genres.map { $0.name },
             countries: response.countries.map { $0.iso_3166_1 },
             trailer: nil,
@@ -51,10 +51,10 @@ private extension MovieCardPresenter {
         )
         
         if let videoMetadata = response.videos.results.first {
-            moviewCardViewModel.trailer = VideoPlatform(site: videoMetadata.site, keyVideo: videoMetadata.key)
+            movieCardViewModel.trailer = VideoPlatform(site: videoMetadata.site, keyVideo: videoMetadata.key)
         }
 
-         input?.update(viewState: .movie( moviewCardViewModel))
+        input?.update(viewState: .content(movieCardViewModel))
     }
 }
 
@@ -62,15 +62,10 @@ extension MovieCardPresenter: MovieCardViewOutput {
     
     func viewDidLoad() {
         loadDetails(request: MoviesDBProvider.detailMovie(id: movie.id))
-        // input?.update(viewState: .movie(movie))
     }
     
-    func didClose() {
-        //
-    }
-    
-    func showFullPoster(from poster: String) {
-        router.presentPosterPreview(of: poster)
+    func showFullPoster(from movie: Movie) {
+        router.presentPosterPreview(of: movie)
     }
     
     func showTrailer(from platform: VideoPlatform) {

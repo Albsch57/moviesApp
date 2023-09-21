@@ -12,12 +12,14 @@ final class MovieSearchViewRouter {
     
     init(viewController: UIViewController) {
         self.viewController = viewController
+        viewController.navigationItem.backButtonDisplayMode = .minimal
     }
 }
 
 extension MovieSearchViewRouter: MovieSearchViewRouting {
-    func show(movie: PopularMovie) {
+    
+    func show(movie: Movie) {
         let vc = DIContainer.shared.resolve(MovieCardViewInput.self, argument: movie) as! UIViewController
-        viewController?.present(vc, animated: true)
+        viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }
