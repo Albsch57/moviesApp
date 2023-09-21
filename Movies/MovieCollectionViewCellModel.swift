@@ -23,7 +23,7 @@ extension MovieCollectionViewCellModel {
     
     func configure(_ cell: MovieCollectionViewCell) {
         //cell.image.image = imageUrl
-        cell.image.setPosterFromMovieDB(of: imageUrl)
+        cell.image.setThumbnailPosterFromMovieDB(of: imageUrl, size: .w500)
         cell.genresLabel.text = genre.joined(separator: ", ")
         cell.ratingLabel.text = String(rating)
         cell.title.text = title

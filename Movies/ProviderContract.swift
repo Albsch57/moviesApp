@@ -10,6 +10,5 @@ import Foundation
 protocol Provider {
     var baseURL: URL { get }
     var params: [NetworkParam] { get }
-    var cdnURL: URL { get }
 }
 

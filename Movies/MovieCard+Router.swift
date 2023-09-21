@@ -20,9 +20,17 @@ final class MovieCardRouter: MovieCardViewRouting {
         //
     }
     
-    func presentPosterPreview() {
-        //
+    func presentPosterPreview(of poster: String) {
+        let vc = FullPosterViewController()
+        let router = FullPosterRouter(viewController: vc)
+        let presenter = FullPosterPresenter(router: router, poster: poster)
+        
+        presenter.input = vc
+        vc.presenter = presenter
+        
+        viewController?.present(UINavigationController(rootViewController: vc), animated: true)
     }
+
     
     func presentTrailer(from platform: VideoPlatform) {
         switch platform {

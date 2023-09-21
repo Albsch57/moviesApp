@@ -7,4 +7,18 @@
 
 import Foundation
 
+// MARK: - View
+protocol FullPosterViewInput: AnyObject {
+    func update(poster: URL)
+}
 
+// MARK: - Presenter
+protocol FullPosterViewOutput: AnyObject {
+    func viewDidLoad()
+    func didClose()
+}
+
+// MARK: - Router
+protocol FullPosterViewRouting: AnyObject {
+    func dismiss()
+}

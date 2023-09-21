@@ -11,12 +11,12 @@ final class MovieCardPresenter {
     
     #warning("Надо унифицировать")
     private let movie: PopularMovie
-    private let router: MovieCardRouter
+    private let router: MovieCardViewRouting
     private let networkClient: NetworkClientType
    
     weak var input: MovieCardViewInput?
     
-    init(movie: PopularMovie, router: MovieCardRouter, networkClient: NetworkClientType, input: MovieCardViewInput? = nil) {
+    init(movie: PopularMovie, router: MovieCardViewRouting, networkClient: NetworkClientType, input: MovieCardViewInput? = nil) {
         self.movie = movie
         self.router = router
         self.networkClient = networkClient
@@ -69,8 +69,8 @@ extension MovieCardPresenter: MovieCardViewOutput {
         //
     }
     
-    func showFullPoster() {
-        //
+    func showFullPoster(from poster: String) {
+        router.presentPosterPreview(of: poster)
     }
     
     func showTrailer(from platform: VideoPlatform) {

@@ -17,13 +17,7 @@ final class MovieSearchViewRouter {
 
 extension MovieSearchViewRouter: MovieSearchViewRouting {
     func show(movie: PopularMovie) {
-        let vc = MovieCardViewController()
-        let router = MovieCardRouter(viewController: vc)
-        let presenter = MovieCardPresenter(movie: movie, router: router, networkClient: NetworkClient(urlBuilder: URLBuilder()))
-        
-        vc.presenter = presenter
-        presenter.input = vc
-        
+        let vc = DIContainer.shared.resolve(MovieCardViewInput.self, argument: movie) as! UIViewController
         viewController?.present(vc, animated: true)
     }
 }

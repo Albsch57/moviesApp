@@ -20,16 +20,7 @@ final class AppRouter: AppRouterType {
     }
     
     func showRootScreen() {
-        let urlBuilder = URLBuilder()
-        let networkClient = NetworkClient(urlBuilder: urlBuilder)
-        
-        let vc = MoviesSearchViewController()
-        let router = MovieSearchViewRouter(viewController: vc)
-        let presenter = MovieSearchPresenter(networkClient: networkClient, router: router)
-        
-        vc.presenter = presenter
-        presenter.input = vc
-        
+        let vc = DIContainer.shared.resolve(MoviesSearchViewInput.self) as! UIViewController
         window.rootViewController = UINavigationController(rootViewController: vc)
         window.makeKeyAndVisible()
     }

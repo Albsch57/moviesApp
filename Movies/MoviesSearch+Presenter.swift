@@ -30,6 +30,7 @@ final class MovieSearchPresenter {
     }
 }
 
+// MARK: - Private Methods
 private extension MovieSearchPresenter {
     func loadMovies<Request: Provider>(request: Request)  {
         networkClient.execute(request: request, with: PopularMoviesResponse.self) {  [weak self] result  in
@@ -50,6 +51,7 @@ private extension MovieSearchPresenter {
                 didReceive(state: .data(rows: movies, page: currentPage))
                 
             case .failure(let error):
+                print(error)
                 input?.update(viewState: .error(massage: error.localizedDescription))
             }
             

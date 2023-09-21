@@ -14,6 +14,14 @@ enum MoviesDBProvider: Provider {
     case movies(page: Int, sorted: SortState = .descending)
     case detailMovie(id: Int)
     
+    enum Poster: String {
+        case w500, original
+        
+        func url(for poster: String) -> URL {
+            URL(string: "https://image.tmdb.org/t/p/\(rawValue)/\(poster)")!
+        }
+    }
+    
     fileprivate var apiKey: String {
         "74ca7ce767bbbeb93cb3f061c50efe78"
     }
@@ -29,9 +37,7 @@ enum MoviesDBProvider: Provider {
         }
     }
     
-    var cdnURL: URL {
-        URL(string: "https://image.tmdb.org/t/p/w500")!
-    }
+    
     
     var params: [NetworkParam] {
         switch self {
@@ -58,6 +64,8 @@ enum MoviesDBProvider: Provider {
                 NetworkParam(name: "api_key", value: apiKey),
                 NetworkParam(name: "append_to_response", value: "videos")
             ]
+        default:
+            return []
         }
     }
     

@@ -10,9 +10,9 @@ import UIKit
 class MovieCardViewController: UIViewController {
     
     private let movieCardView = MovieCardView()
-    private var movieCardViewModel: MovieCardViewModel! = nil {
+    var movieCardViewModel: MovieCardViewModel! = nil {
         didSet {
-            movieCardView.imageView.setPosterFromMovieDB(of: movieCardViewModel.imageUrl)
+            movieCardView.imageView.setThumbnailPosterFromMovieDB(of: movieCardViewModel.imageUrl, size: .w500)
             movieCardView.descriptionLabel.text = movieCardViewModel.description
             movieCardView.nameLabel.text = movieCardViewModel.title
             movieCardView.countryLabel.text = movieCardViewModel.countries.joined(separator: ", ")
@@ -54,7 +54,8 @@ class MovieCardViewController: UIViewController {
     
     @objc
     private func imageViewTapped() {
-       
+        guard let imageURL = movieCardViewModel.imageUrl else { return }
+        presenter?.showFullPoster(from: imageURL)
     }
 }
 

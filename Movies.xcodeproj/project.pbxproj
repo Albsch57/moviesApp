@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EF5BF342ABC68D2002740C1 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5BF332ABC68D2002740C1 /* DIContainer.swift */; };
+		3EF5BF372ABC799A002740C1 /* DI+Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5BF362ABC799A002740C1 /* DI+Assembler.swift */; };
 		420F02C22AB99C18002F8634 /* MovieCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F02C12AB99C18002F8634 /* MovieCardViewController.swift */; };
 		420F02C52AB99C54002F8634 /* MovieCard+Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F02C42AB99C54002F8634 /* MovieCard+Presenter.swift */; };
 		420F02C72AB99C5D002F8634 /* MovieCard+Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F02C62AB99C5D002F8634 /* MovieCard+Router.swift */; };
@@ -28,6 +30,7 @@
 		42992FBD2ABC2A4900090E42 /* FullPoster+Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42992FBC2ABC2A4900090E42 /* FullPoster+Contract.swift */; };
 		42992FBF2ABC2A5600090E42 /* FullPoster+Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42992FBE2ABC2A5600090E42 /* FullPoster+Presenter.swift */; };
 		42992FC12ABC2A5E00090E42 /* FullPoster+Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42992FC02ABC2A5E00090E42 /* FullPoster+Router.swift */; };
+		42992FC42ABC39F800090E42 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 42992FC32ABC39F800090E42 /* Swinject */; };
 		42A37DD52AB89184008477B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A37DD42AB89184008477B9 /* AppDelegate.swift */; };
 		42A37DD72AB89184008477B9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A37DD62AB89184008477B9 /* SceneDelegate.swift */; };
 		42A37DDE2AB89186008477B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A37DDD2AB89186008477B9 /* Assets.xcassets */; };
@@ -49,6 +52,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3EF5BF332ABC68D2002740C1 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		3EF5BF362ABC799A002740C1 /* DI+Assembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DI+Assembler.swift"; sourceTree = "<group>"; };
 		420F02C12AB99C18002F8634 /* MovieCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCardViewController.swift; sourceTree = "<group>"; };
 		420F02C42AB99C54002F8634 /* MovieCard+Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieCard+Presenter.swift"; sourceTree = "<group>"; };
 		420F02C62AB99C5D002F8634 /* MovieCard+Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovieCard+Router.swift"; sourceTree = "<group>"; };
@@ -94,6 +99,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				420F02E02AB9F6E7002F8634 /* EasyStash in Frameworks */,
+				42992FC42ABC39F800090E42 /* Swinject in Frameworks */,
 				420F02D82AB9C7EC002F8634 /* SDWebImage in Frameworks */,
 				42992FB92ABC1CE200090E42 /* YouTubePlayerKit in Frameworks */,
 				420F02D52AB9C0AA002F8634 /* Alamofire in Frameworks */,
@@ -103,6 +109,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EF5BF352ABC7976002740C1 /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				3EF5BF332ABC68D2002740C1 /* DIContainer.swift */,
+				3EF5BF362ABC799A002740C1 /* DI+Assembler.swift */,
+			);
+			name = Infrastructure;
+			sourceTree = "<group>";
+		};
 		420F02C32AB99C20002F8634 /* MovieCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,15 +175,15 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
-		42233D1C2ABB1CAD00A4907F /* Full */ = {
+		42233D1C2ABB1CAD00A4907F /* PosterPreview */ = {
 			isa = PBXGroup;
 			children = (
 				42233D1A2ABB1CA900A4907F /* FullPosterViewController.swift */,
-				42992FBC2ABC2A4900090E42 /* FullPoster+Contract.swift */,
 				42992FBE2ABC2A5600090E42 /* FullPoster+Presenter.swift */,
+				42992FBC2ABC2A4900090E42 /* FullPoster+Contract.swift */,
 				42992FC02ABC2A5E00090E42 /* FullPoster+Router.swift */,
 			);
-			name = Full;
+			name = PosterPreview;
 			sourceTree = "<group>";
 		};
 		428FBA932ABB466700A1C12C /* Components */ = {
@@ -201,6 +216,7 @@
 			children = (
 				42A37DFA2AB89FFF008477B9 /* App */,
 				42A37DF82AB89542008477B9 /* AppRouter.swift */,
+				3EF5BF352ABC7976002740C1 /* Infrastructure */,
 				420F02CF2AB9B7D9002F8634 /* Common */,
 				42A37DFE2AB8A072008477B9 /* Network */,
 				42A37DF02AB89454008477B9 /* Scenes */,
@@ -216,7 +232,7 @@
 			children = (
 				42A37DF12AB89482008477B9 /* MoviesSearch */,
 				420F02C32AB99C20002F8634 /* MovieCard */,
-				42233D1C2ABB1CAD00A4907F /* Full */,
+				42233D1C2ABB1CAD00A4907F /* PosterPreview */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -319,6 +335,7 @@
 				420F02D72AB9C7EC002F8634 /* SDWebImage */,
 				420F02DF2AB9F6E7002F8634 /* EasyStash */,
 				42992FB82ABC1CE200090E42 /* YouTubePlayerKit */,
+				42992FC32ABC39F800090E42 /* Swinject */,
 			);
 			productName = Movies;
 			productReference = 42A37DD12AB89184008477B9 /* Movies.app */;
@@ -353,6 +370,7 @@
 				420F02D62AB9C7EC002F8634 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				420F02DE2AB9F6E7002F8634 /* XCRemoteSwiftPackageReference "EasyStash" */,
 				42992FB72ABC1CE200090E42 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */,
+				42992FC22ABC39F800090E42 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			productRefGroup = 42A37DD22AB89184008477B9 /* Products */;
 			projectDirPath = "";
@@ -386,11 +404,13 @@
 				42A37DFC2AB8A062008477B9 /* PopularMovie.swift in Sources */,
 				42A37DEF2AB8936F008477B9 /* MoviesSearch+ViewController.swift in Sources */,
 				42A37DD52AB89184008477B9 /* AppDelegate.swift in Sources */,
+				3EF5BF342ABC68D2002740C1 /* DIContainer.swift in Sources */,
 				42A37E0A2AB8A714008477B9 /* URLBuilder.swift in Sources */,
 				42233D202ABB406900A4907F /* SortState.swift in Sources */,
 				42992FBF2ABC2A5600090E42 /* FullPoster+Presenter.swift in Sources */,
 				42992FBD2ABC2A4900090E42 /* FullPoster+Contract.swift in Sources */,
 				42992FC12ABC2A5E00090E42 /* FullPoster+Router.swift in Sources */,
+				3EF5BF372ABC799A002740C1 /* DI+Assembler.swift in Sources */,
 				420F02C92AB99C69002F8634 /* MovieCard+Contract.swift in Sources */,
 				428FBA992ABB538700A1C12C /* MovieDetailResponse.swift in Sources */,
 				42A37E0D2AB8AA35008477B9 /* TheMoviesDBProvider.swift in Sources */,
@@ -656,6 +676,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		42992FC22ABC39F800090E42 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -678,6 +706,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 42992FB72ABC1CE200090E42 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
 			productName = YouTubePlayerKit;
+		};
+		42992FC32ABC39F800090E42 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42992FC22ABC39F800090E42 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

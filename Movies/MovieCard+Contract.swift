@@ -29,13 +29,13 @@ protocol MovieCardViewInput: AnyObject {
 protocol MovieCardViewOutput: AnyObject {
     func viewDidLoad()
     func didClose()
-    func showFullPoster()
+    func showFullPoster(from poster: String)
     func showTrailer(from platform: VideoPlatform)
 }
 
 // MARK: - Router
 protocol MovieCardViewRouting: AnyObject {
     func dismiss()
-    func presentPosterPreview()
+    func presentPosterPreview(of poster: String)
     func presentTrailer(from platform: VideoPlatform)
 }

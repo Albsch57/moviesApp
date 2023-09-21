@@ -34,10 +34,8 @@ class MoviesSearchViewController: UIViewController {
         collectionView.setCollectionViewLayout(makeCompositionalLayout(), animated: false)
         makeLayout()
         configureSearchBar()
-        presenter.viewDidLoad()
-        
         sortingMovies()
-        
+        presenter.viewDidLoad()
     }
 }
 
@@ -154,20 +152,10 @@ extension MoviesSearchViewController {
 extension MoviesSearchViewController: UICollectionViewDataSourcePrefetching {
     // для тех элементов который вот-вот должны будут показаны
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains(where: shouldLoadNextPage) {
+        if indexPaths.contains(where: { $0.row == movieData.count - 2 }) {
             // Проверка условия для подгрузки новых моделей
             presenter.prefetchMovies()
         }
-    }
-    
-    // jтменить загрузку для определенных элементов
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        //
-    }
-    
-    private func shouldLoadNextPage(for indexPath: IndexPath) -> Bool {
-        //нужно ли подгружать след страницу если на предпоследней то пора загружать данные
-        indexPath.row == movieData.count - 2
     }
 }
 
