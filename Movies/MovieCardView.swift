@@ -27,7 +27,7 @@ class MovieCardView: UIView {
         return UIButton(configuration: configuration)
     }()
     
-    lazy var ratingLabel: UILabel = makeLabel(title: "10/0", size: 20)
+    var ratingLabel: UILabel! = nil
     
     var descriptionLabel: UILabel! = nil
     
@@ -63,20 +63,23 @@ class MovieCardView: UIView {
 
 // MARK: Private Methods
 private extension MovieCardView {
-    func makeLabel(title: String, size: CGFloat) -> UILabel {
+    func makeLabel(size: CGFloat, numberOfLines: Int = 1) -> UILabel {
         let label = UILabel()
-        label.text = title
         label.font = UIFont.systemFont(ofSize: size)
+        label.numberOfLines = numberOfLines
         return label
     }
     
     func setupUI() {
-        nameLabel = makeLabel(title: "Name", size: 20)
-        countryLabel = makeLabel(title: "Country", size: 20)
-        genreLabel = makeLabel(title: "Genre Name", size: 20)
         
-        descriptionLabel = makeLabel(title: "", size: 20)
-        descriptionLabel.numberOfLines = 0
+        backgroundColor = .systemBackground
+        nameLabel = makeLabel(size: 26)
+        countryLabel = makeLabel(size: 24)
+        genreLabel = makeLabel(size: 24, numberOfLines: 0)
+    
+        ratingLabel = makeLabel(size: 24)
+        
+        descriptionLabel = makeLabel(size: 22, numberOfLines: 0)
         
         addSubview(scrollView)
        

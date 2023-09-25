@@ -25,7 +25,7 @@ final class MoviesSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Popular Movies"
+        navigationItem.title = "POPULAR_MOVIE_TITLE".localized
         
         setupUI()
         configureSearchBar()
@@ -64,11 +64,11 @@ private extension MoviesSearchViewController {
     
     func configureSortingButton() {
 
-        let sortedPopular = UIAction(title: "Popular", state: .on) { [weak presenter] _ in
+        let sortedPopular = UIAction(title: "FILTER_POPULAR".localized, state: .on) { [weak presenter] _ in
             presenter?.changeSortState(state: .descending)
         }
         
-        let sortedUnpopular = UIAction(title: "Not Popular") { [weak presenter] _ in
+        let sortedUnpopular = UIAction(title: "FILTER_NOT_POPULAR".localized) { [weak presenter] _ in
             presenter?.changeSortState(state: .ascending)
         }
         
@@ -84,7 +84,7 @@ private extension MoviesSearchViewController {
     
     func configureSearchBar() {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.placeholder = "SEARCH".localized
         searchController.definesPresentationContext = true
         searchController.extendedLayoutIncludesOpaqueBars = true
         searchController.searchBar.delegate = self

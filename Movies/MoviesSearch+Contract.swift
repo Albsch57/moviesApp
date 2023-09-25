@@ -7,9 +7,6 @@
 
 import Foundation
 
-// объявлены все требования протокола для вью, презентера и контракта
-
-
 // MARK: - View
 protocol MoviesSearchViewInput: AnyObject {
     func update(viewState: ViewState<Movie>)

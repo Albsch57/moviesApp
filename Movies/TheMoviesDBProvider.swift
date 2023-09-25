@@ -7,7 +7,6 @@
 
 import Foundation
 
-// типа репозитория только для нетворкинга
 enum MoviesDBProvider: Provider {
     
     case searchMovies(query: String, page: Int)

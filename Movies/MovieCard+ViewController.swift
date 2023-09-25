@@ -21,7 +21,7 @@ final class MovieCardViewController: UIViewController {
             movieCardView.nameLabel.text = movieCardViewModel.title
             movieCardView.countryLabel.text = movieCardViewModel.countries.joined(separator: ", ")
             movieCardView.genreLabel.text = movieCardViewModel.genre.joined(separator: ", ")
-            movieCardView.ratingLabel.text = String ("Rating: \(movieCardViewModel.rating)")
+            movieCardView.ratingLabel.text = String ("\("RATING".localized): \(movieCardViewModel.rating)")
             movieCardView.trailerButton.isHidden = movieCardViewModel.trailer == nil
         }
     }
@@ -34,8 +34,6 @@ final class MovieCardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .cyan
         
         setupTapGestureRecognizer()
         configureTapActionForTrailierButton()

@@ -7,8 +7,6 @@
 
 import Foundation
 
-// важные протоколы файл манифест КОНСТИТУЦия, для модуля конкретного приложения
-
 enum NetworkErrorType: Error {
     case decoding, urlEncoding
 }
