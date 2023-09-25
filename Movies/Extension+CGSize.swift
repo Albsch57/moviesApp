@@ -2,7 +2,7 @@
 //  Extension+CGSize.swift
 //  Movies
 //
-//  Created by Влад Третьяк on 21.09.2023.
+//  Created by Alyona Bedrosova 21.09.2023.
 //
 
 import UIKit

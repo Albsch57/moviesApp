@@ -19,6 +19,7 @@ final class AppRouter: AppRouterType {
         self.window = window
     }
     
+    // Comment
     func showRootScreen() {
         let vc = DIContainer.shared.resolve(MoviesSearchViewInput.self) as! UIViewController
         window.rootViewController = UINavigationController(rootViewController: vc)

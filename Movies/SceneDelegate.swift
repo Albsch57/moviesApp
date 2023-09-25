@@ -10,8 +10,6 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var appRouter: AppRouterType! = nil
-    
-//     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -22,11 +20,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         appRouter = AppRouter(window: UIWindow(windowScene: windowScene))
         appRouter.showRootScreen()
         
-        
-//        window = UIWindow(windowScene: windowScene)
-//        window?.rootViewController = UINavigationController(rootViewController: DescriptionViewController())
-//
-//        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -41,7 +41,7 @@ class PopularMovieCollectionViewCell: UICollectionViewCell {
         label.layer.shadowOpacity = 10.0
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
-        label.numberOfLines = 1
+        label.numberOfLines = 2
         return label
     }()
     
@@ -113,6 +113,7 @@ extension PopularMovieCollectionViewCell {
 
             genresLabel.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
             genresLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            genresLabel.trailingAnchor.constraint(equalTo: ratingLabel.leadingAnchor, constant: -8),
 //            genresLabel.widthAnchor.constraint(equalToConstant: 200),
 
 
@@ -124,10 +125,10 @@ extension PopularMovieCollectionViewCell {
         
         
         
-//        genresLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-//        ratingLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        genresLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        ratingLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
-        genresLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-        ratingLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        genresLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        ratingLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
 }
