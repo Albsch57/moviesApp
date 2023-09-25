@@ -122,9 +122,7 @@ extension PopularMovieCollectionViewCell {
             
             
         ])
-        
-        
-        
+ 
         genresLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         ratingLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
